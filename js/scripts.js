@@ -131,3 +131,28 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   });
 });
+
+
+document.addEventListener('DOMContentLoaded', () => {
+  function toggleExpertiseCard(card) {
+      // Check if this card is already expanded
+      const isExpanded = card.classList.contains('expanded');
+
+      // Close any other expanded card
+      document.querySelectorAll('.expertise-item.expanded').forEach((otherCard) => {
+          if (otherCard !== card) otherCard.classList.remove('expanded');
+      });
+
+      // Toggle the clicked card
+      if (isExpanded) {
+          card.classList.remove('expanded');
+      } else {
+          card.classList.add('expanded');
+      }
+  }
+
+  // Add event listener to each expertise card
+  document.querySelectorAll('.expertise-item').forEach((card) => {
+      card.addEventListener('click', () => toggleExpertiseCard(card));
+  });
+});

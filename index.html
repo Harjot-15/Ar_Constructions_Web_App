@@ -227,38 +227,115 @@
             </div>
         </section>
 
-         <section class="cta">
+        <section class="contact" id="contact">
             <div class="container">
-                 <h2>Ready to Transform Your Construction Projects? <span class="text-highlight">Contact Us Today!</span></h2>
-                <button class="btn primary-btn">Get In Touch</button>
-           </div>
-         </section>
+                <div class="contact-card">
+                    <h2>📞 Get In Touch</h2>
+                    <p>Fill out the form, and we will contact you on WhatsApp. 🚀</p>
+        
+                    <form id="whatsappForm">
+                        <div class="input-group">
+                            <label for="name">👤 Name</label>
+                            <input type="text" id="name" name="name" placeholder="Your Name">
+                        </div>
+                        <div class="input-group">
+                            <label for="email">📧 Email*</label>
+                            <input type="email" id="email" name="email" placeholder="Your Email" required>
+                        </div>
+                        <div class="input-group">
+                            <label for="phone">📱 WhatsApp Number*</label>
+                            <input type="tel" id="phone" name="phone" placeholder="Your WhatsApp Number" required>
+                        </div>
+                        <div class="input-group">
+                            <label for="message">💬 Message*</label>
+                            <textarea id="message" name="message" placeholder="Your Message" required></textarea>
+                        </div>
+                        <button type="submit" class="btn whatsapp-btn">📲 Send on WhatsApp</button>
+                    </form>
+                </div>
+            </div>
+        </section>        
+        
+        <script>
+            document.getElementById("whatsappForm").addEventListener("submit", async function(event) {
+                event.preventDefault();
+            
+                const name = document.getElementById("name").value.trim();
+                const email = document.getElementById("email").value.trim();
+                const phone = document.getElementById("phone").value.trim();
+                const message = document.getElementById("message").value.trim();
+            
+                if (!phone.match(/^\+?\d{10,15}$/)) {
+                    alert("❌ Please enter a valid WhatsApp number with country code!");
+                    return;
+                }
+            
+                const formData = { name, email, phone, message };
+            
+                try {
+                    const response = await fetch("http://localhost:5000/send-whatsapp", {
+                        method: "POST",
+                        headers: { "Content-Type": "application/json" },
+                        body: JSON.stringify(formData)
+                    });
+            
+                    const result = await response.json();
+                    if (result.success) {
+                        alert("✅ Message sent successfully via WhatsApp!");
+                        document.getElementById("whatsappForm").reset();
+                    } else {
+                        alert("❌ Failed to send message. Please try again.");
+                    }
+                } catch (error) {
+                    alert("⚠️ Error sending message! Try again.");
+                    console.error("Form submission error:", error);
+                }
+            });
+            </script>                            
+        
     </main>
 
-    <footer id="contact">
+    <footer>
         <div class="container">
+            <div class="footer-about">
+                <a href="#" class="logo">AR<span class="logo-highlight">Construct</span></a>
+                <p>We provide AR-powered construction solutions for a smarter future.</p>
+            </div>
+    
             <div class="footer-links">
-               <a href="#">Home</a>
-               <a href="#services">Services</a>
-               <a href="#expertise">Expertise</a>
-               <a href="#portfolio">Portfolio</a>
-               <a href="#contact">Contact</a>
+                <h3>Quick Links</h3>
+                <ul>
+                    <li><a href="#">Home</a>
+                    <li><a href="#services">Services</a></li>
+                    <li><a href="#portfolio">Portfolio</a></li>
+                    <li><a href="#expertise">Expertise</a></li>
+                    <li><a href="#contact">Contact</a></li>
+                </ul>
             </div>
-           <div class="footer-social">
-                <a href="#" class="social-icon"><i class="fab fa-facebook-f"></i></a>
-              <a href="#" class="social-icon"><i class="fab fa-twitter"></i></a>
-              <a href="#" class="social-icon"><i class="fab fa-instagram"></i></a>
+        
+            <div class="footer-social">
+                    <h3>Follow Us</h3>
+                    <a href="#"><i class="fab fa-facebook-f"></i></a>
+                    <a href="#"><i class="fab fa-twitter"></i></a>
+                    <a href="#"><i class="fab fa-instagram"></i></a>
+                    <a href="#"><i class="fab fa-linkedin"></i></a>
             </div>
-            <div class="footer-contact">
-               <p>Email: info@arconstruct.com</p>
-              <p>Phone: +1-123-456-7890</p>
+        
+                <div class="footer-contact">
+                    <h3>Contact</h3>
+                    <p>Email: info@arconstruct.com</p>
+                    <p>Phone: +1-123-456-7890</p>
+                    <p>WhatsApp: +1-123-456-7890</p>
+                </div>
             </div>
-           <div class="subscription">
-              <input type="email" placeholder="Enter your email" aria-label="Email Address">
-              <button class="btn secondary-btn">Subscribe</button>
+        
+            <div class="footer-bottom">
+                <p>&copy; 2025 AR Construct. All rights reserved.</p>
             </div>
-       </div>
-    </footer>
+        </footer>
+            
   <script src="js/scripts.js"></script>
+  <script src="js/overlays.js"></script>
+
 </body>
 </html>
