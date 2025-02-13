@@ -227,71 +227,123 @@
             </div>
         </section>
 
+        
         <section class="contact" id="contact">
             <div class="container">
-                <div class="contact-card">
-                    <h2>📞 Get In Touch</h2>
-                    <p>Fill out the form, and we will contact you on WhatsApp. 🚀</p>
+                <div class="contact-wrapper">
+                    <!-- Left Aligned Form -->
+                    <div class="contact-form">
+                        <h2>Let's Connect</h2>
+                        <form id="contactForm">
+                            <div class="form-grid">
+                                <div class="input-group">
+                                    <input type="text" id="name" name="name" placeholder="Your Name" required>
+                                </div>
+                                <div class="input-group">
+                                    <input type="email" id="email" name="email" placeholder="Your Email" required>
+                                </div>
+                                <div class="input-group">
+                                    <input type="tel" id="phone" name="phone" placeholder="Phone Number" required>
+                                </div>
+                                <div class="input-group">
+                                    <input type="text" id="subject" name="subject" placeholder="Subject" required>
+                                </div>
+                                <div class="input-group full-width">
+                                    <textarea id="message" name="message" placeholder="Your Message" required></textarea>
+                                </div>
+                            </div>
+                            <button type="submit" class="btn primary-btn">Send Message</button>
+                        </form>
+                    </div>
         
-                    <form id="whatsappForm">
-                        <div class="input-group">
-                            <label for="name">👤 Name</label>
-                            <input type="text" id="name" name="name" placeholder="Your Name">
-                        </div>
-                        <div class="input-group">
-                            <label for="email">📧 Email*</label>
-                            <input type="email" id="email" name="email" placeholder="Your Email" required>
-                        </div>
-                        <div class="input-group">
-                            <label for="phone">📱 WhatsApp Number*</label>
-                            <input type="tel" id="phone" name="phone" placeholder="Your WhatsApp Number" required>
-                        </div>
-                        <div class="input-group">
-                            <label for="message">💬 Message*</label>
-                            <textarea id="message" name="message" placeholder="Your Message" required></textarea>
-                        </div>
-                        <button type="submit" class="btn whatsapp-btn">📲 Send on WhatsApp</button>
-                    </form>
+                    <!-- Map Section -->
+                    <div class="map-container">
+                        <iframe 
+                            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2781.8192550753784!2d-73.63926832392092!3d45.42851883581905!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x4cc9114804fa7db5%3A0xeebf9bf2d5c6af15!2s833%20Rue%20Radisson%2C%20Montr%C3%A9al%2C%20QC%20H8R%202X2!5e1!3m2!1sen!2sca!4v1739381488124!5m2!1sen!2sca" 
+                            width="600" 
+                            height="450" 
+                            style="border:0;" 
+                            allowfullscreen="" 
+                            loading="lazy" 
+                            referrerpolicy="no-referrer-when-downgrade">
+                        </iframe>
+                    </div>
                 </div>
             </div>
-        </section>        
+        </section>
         
         <script>
-            document.getElementById("whatsappForm").addEventListener("submit", async function(event) {
-                event.preventDefault();
-            
-                const name = document.getElementById("name").value.trim();
-                const email = document.getElementById("email").value.trim();
-                const phone = document.getElementById("phone").value.trim();
-                const message = document.getElementById("message").value.trim();
-            
-                if (!phone.match(/^\+?\d{10,15}$/)) {
-                    alert("❌ Please enter a valid WhatsApp number with country code!");
-                    return;
+            document.getElementById("contactForm").addEventListener("submit", async (e) => {
+              e.preventDefault();
+          
+              // Gather form values
+              const name = document.getElementById('name').value.trim();
+              const email = document.getElementById('email').value.trim();
+              const phone = document.getElementById('phone').value.trim();
+              const subject = document.getElementById('subject').value.trim();
+              const messageBody = document.getElementById('message').value.trim();
+          
+              // (Optional) Validate the phone number
+              if (!/^\+?[\d\s\-\(\)]{7,}$/.test(phone)) {
+                showAlert('❌ Please enter a valid phone number (include country code)', 'error');
+                return;
+              }
+          
+              // Construct the formatted message for Telegram
+              const telegramMessage = `
+          📨 *New Contact Request* 📬
+          
+          👤 *Name:* ${name}
+          📧 *Email:* ${email}
+          📱 *Phone:* ${phone}
+          🔖 *Subject:* ${subject}
+          
+          💬 *Message:*
+          ${messageBody}
+          
+          ⏱️ _Received at: ${new Date().toLocaleString()}_
+              `;
+          
+              try {
+                // This fetch call sends the data to your secure server endpoint
+                const response = await fetch('/api/sendMessage', {
+                  method: 'POST',
+                  headers: { 'Content-Type': 'application/json' },
+                  body: JSON.stringify({ message: telegramMessage })
+                });
+          
+                if (!response.ok) {
+                  showAlert('❌ Failed to send message. Please try again.', 'error');
+                  return;
                 }
-            
-                const formData = { name, email, phone, message };
-            
-                try {
-                    const response = await fetch("http://localhost:5000/send-whatsapp", {
-                        method: "POST",
-                        headers: { "Content-Type": "application/json" },
-                        body: JSON.stringify(formData)
-                    });
-            
-                    const result = await response.json();
-                    if (result.success) {
-                        alert("✅ Message sent successfully via WhatsApp!");
-                        document.getElementById("whatsappForm").reset();
-                    } else {
-                        alert("❌ Failed to send message. Please try again.");
-                    }
-                } catch (error) {
-                    alert("⚠️ Error sending message! Try again.");
-                    console.error("Form submission error:", error);
+          
+                const data = await response.json();
+          
+                if (data.ok) {
+                  showAlert('✅ Message sent successfully!', 'success');
+                  document.getElementById("contactForm").reset();
+                } else {
+                  showAlert('❌ Failed to send message. Please try again.', 'error');
                 }
+              } catch (error) {
+                console.error("Submission error:", error);
+                showAlert('⚠️ Network error. Please try again.', 'error');
+              }
             });
-            </script>                            
+          
+            // Simple custom alert function to show messages to the user
+            function showAlert(message, type) {
+              const alertBox = document.createElement('div');
+              alertBox.className = `form-alert ${type}`;
+              alertBox.innerHTML = `<span>${message}</span>
+                                      <button onclick="this.parentElement.remove()">×</button>`;
+              const form = document.getElementById('contactForm');
+              form.parentNode.insertBefore(alertBox, form.nextSibling);
+              setTimeout(() => alertBox.remove(), 5000);
+            }
+          </script>
+          
+                                        
         
     </main>
 

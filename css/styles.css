@@ -513,10 +513,12 @@ body.loaded .hero-image-placeholder {
   opacity: 1;
 }
 /* ---------- Testimonials Section ---------- */
-.testimonials{
+/* ---------- Testimonials Section ---------- */
+.testimonials {
   padding: 80px 0;
-background-color: var(--bg-color);
+  background-color: var(--bg-color); /* Match expertise section background */
 }
+
 .testimonials h2 {
   font-size: 2.5rem;
   text-align: center;
@@ -524,133 +526,212 @@ background-color: var(--bg-color);
   font-weight: 700;
   color: var(--text-color);
 }
+
 .testimonial-slider {
   display: flex;
   overflow-x: auto;
   gap: 20px;
   padding-bottom: 20px;
 }
+
 .testimonial-card {
   flex: 0 0 300px;
-  background-color: var(--glass-bg);
+  background-color: var(--card-bg); /* Match expertise cards and contact form */
   border-radius: 10px;
-  padding: 20px;
-  box-shadow: 3px 3px 7px rgba(0, 0, 0, 0.1);
-  backdrop-filter: blur(5px);
-  transition: transform 0.3s;
+  padding: 25px;
+  box-shadow: 3px 3px 7px var(--card-shadow); /* Same as expertise cards */
+  transition: all 0.3s ease;
+  border: 1px solid rgba(var(--highlight-color-rgb), 0.1); /* Subtle border */
 }
+
 .testimonial-card:hover {
   transform: translateY(-5px);
+  box-shadow: 5px 5px 12px rgba(0, 0, 0, 0.15); /* Match expertise hover */
 }
+
 .testimonial-avatar {
   width: 60px;
   height: 60px;
   border-radius: 50%;
-  margin-bottom: 10px;
+  margin-bottom: 15px;
   display: block;
   margin-left: auto;
   margin-right: auto;
   filter: grayscale(1);
+  transition: filter 0.3s ease;
 }
-.testimonial-card p{
+
+.testimonial-card:hover .testimonial-avatar {
+  filter: grayscale(0);
+}
+
+.testimonial-card p {
   margin-bottom: 10px;
   text-align: center;
   color: var(--text-color);
+  line-height: 1.6;
 }
+
+.testimonial-card p:last-child {
+  color: var(--secondary-text-color);
+  font-style: italic;
+  font-size: 0.9em;
+}
+
+/* Mobile Responsiveness */
+@media (max-width: 768px) {
+  .testimonial-card {
+    flex: 0 0 280px;
+    padding: 20px;
+  }
+  
+  .testimonials h2 {
+    font-size: 2rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .testimonial-card {
+    flex: 0 0 90%;
+  }
+}
+
 /* Contact Form Styling */
+/* Contact Form Styling - Preserving Original Design */
 .contact {
-  padding: 60px 0;
-  text-align: center;
+  padding: 80px 0;
 }
 
-.contact-card {
-  max-width: 500px;
-  margin: auto;
-  background: var(--glass-bg);
-  padding: 25px;
-  border-radius: 10px;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+.contact-wrapper {
+  display: flex;
+  gap: 40px;
+  align-items: flex-start;
 }
 
-.contact-card h2 {
-  font-size: 2rem;
-  color: var(--highlight-color);
-  margin-bottom: 10px;
+.contact-form {
+  flex: 1;
+  background: var(--card-bg);
+  padding: 40px;
+  border-radius: 15px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
 }
 
-.contact-card p {
-  color: var(--text-color);
-  margin-bottom: 20px;
+.map-container {
+  flex: 1;
+  min-height: 500px;
+  border-radius: 15px;
+  overflow: hidden;
 }
 
-.input-group {
-  margin-bottom: 15px;
-  text-align: left;
+.map-container iframe {
+  width: 100%;
+  height: 100%;
+  min-height: 500px;
+  border: none;
 }
 
-.input-group label {
-  display: block;
-  font-weight: bold;
-  margin-bottom: 5px;
+.form-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 20px;
+  margin-bottom: 30px;
 }
 
 .input-group input,
 .input-group textarea {
   width: 100%;
-  padding: 10px;
+  padding: 12px 15px;
   border: none;
-  border-radius: 5px;
-  background: rgba(255, 255, 255, 0.1);
+  border-radius: 8px;
+  background: rgba(0, 0, 0, 0.05);
   color: var(--text-color);
-  outline: none;
-  transition: 0.3s ease-in-out;
+  transition: all 0.3s ease;
+  border-left: 3px solid transparent;
 }
 
 .input-group input:focus,
 .input-group textarea:focus {
-  background: rgba(255, 255, 255, 0.2);
-  border-left: 3px solid var(--highlight-color);
+  background: rgba(0, 0, 0, 0.08);
+  border-left-color: var(--highlight-color);
+  outline: none;
 }
 
-textarea {
-  resize: none;
-  height: 100px;
+.input-group textarea {
+  height: 120px;
+  resize: vertical;
 }
 
-/* WhatsApp Button - Similar to Primary But Separate */
-.whatsapp-btn {
-  display: inline-block;
-  width: 100%;
-  padding: 12px 15px;
-  font-size: 1rem;
-  font-weight: bold;
+.full-width {
+  grid-column: 1 / -1;
+}
+
+/* Mobile Fixes (Only layout changes, no style changes) */
+@media (max-width: 768px) {
+  .contact-wrapper {
+    flex-direction: column;
+    gap: 30px;
+  }
+
+  .contact-form,
+  .map-container {
+    width: 100%;
+    flex: none;
+  }
+
+  .map-container {
+    min-height: 300px;
+  }
+
+  .map-container iframe {
+    min-height: 300px;
+  }
+}
+
+/* Very Small Phones Fix */
+@media (max-width: 480px) {
+  .contact-form {
+    padding: 30px;
+  }
+  
+  .form-grid {
+    gap: 15px;
+  }
+}
+
+/* Alert Styling */
+.form-alert {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  padding: 15px 35px 15px 20px;
+  border-radius: 8px;
   color: white;
-  text-align: center;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  z-index: 1000;
+  animation: slideIn 0.3s ease-out;
+}
+
+.form-alert.success { background: #28a745; }
+.form-alert.error { background: #dc3545; }
+.form-alert button {
+  position: absolute;
+  right: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+  background: none;
   border: none;
-  border-radius: 30px;
+  color: white;
   cursor: pointer;
-  background: linear-gradient(135deg, #25D366, #128C7E); /* WhatsApp Green */
-  box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.2); /* Neumorphic effect */
-  transition: all 0.3s ease-in-out;
+  font-size: 1.5em;
+  padding: 0 5px;
 }
 
-.whatsapp-btn:hover {
-  background: linear-gradient(135deg, #20b358, #0e6b5d); /* Darker Green */
-  transform: scale(1.05);
-  box-shadow: 3px 3px 7px rgba(0, 0, 0, 0.3);
+@keyframes slideIn {
+  from { transform: translateX(100%); }
+  to { transform: translateX(0); }
 }
-
-/* WhatsApp Button Dark Mode */
-body.dark-mode .whatsapp-btn {
-  background: linear-gradient(135deg, #25D366, #128C7E);
-  box-shadow: 2px 2px 5px rgba(255, 255, 255, 0.1);
-}
-
-body.dark-mode .whatsapp-btn:hover {
-  background: linear-gradient(135deg, #20b358, #0e6b5d);
-  box-shadow: 3px 3px 7px rgba(255, 255, 255, 0.2);
-}
-
 
 
 /* ---------- Footer ---------- */
