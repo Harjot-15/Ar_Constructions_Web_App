@@ -276,20 +276,14 @@
             document.getElementById("contactForm").addEventListener("submit", async (e) => {
               e.preventDefault();
           
-              // Gather form values
               const name = document.getElementById('name').value.trim();
               const email = document.getElementById('email').value.trim();
               const phone = document.getElementById('phone').value.trim();
               const subject = document.getElementById('subject').value.trim();
               const messageBody = document.getElementById('message').value.trim();
           
-              // (Optional) Validate the phone number
-              if (!/^\+?[\d\s\-\(\)]{7,}$/.test(phone)) {
-                showAlert('❌ Please enter a valid phone number (include country code)', 'error');
-                return;
-              }
+              // (Optional) Validate phone number here
           
-              // Construct the formatted message for Telegram
               const telegramMessage = `
           📨 *New Contact Request* 📬
           
@@ -305,7 +299,6 @@
               `;
           
               try {
-                // This fetch call sends the data to your secure server endpoint
                 const response = await fetch('/api/sendMessage', {
                   method: 'POST',
                   headers: { 'Content-Type': 'application/json' },
@@ -318,7 +311,6 @@
                 }
           
                 const data = await response.json();
-          
                 if (data.ok) {
                   showAlert('✅ Message sent successfully!', 'success');
                   document.getElementById("contactForm").reset();
@@ -331,7 +323,6 @@
               }
             });
           
-            // Simple custom alert function to show messages to the user
             function showAlert(message, type) {
               const alertBox = document.createElement('div');
               alertBox.className = `form-alert ${type}`;
@@ -341,7 +332,7 @@
               form.parentNode.insertBefore(alertBox, form.nextSibling);
               setTimeout(() => alertBox.remove(), 5000);
             }
-          </script>
+          </script>          
           
                                         
         
